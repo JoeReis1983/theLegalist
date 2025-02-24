@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  fastapi:
+    build:
+      context: ./backend  # Aponta para a pasta onde está o Dockerfile
+    container_name: backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app  # Monta o código dentro do container
+    environment:
+      - ENV=production
+    restart: unless-stopped
+  db:
+      image: postgres:13
+      container_name: postgres-container
+      environment:
+        - POSTGRES_USER=user
+        - POSTGRES_PASSWORD=password
+        - POSTGRES_DB=mydatabase
+      ports:
+        - "5432:5432"
+      volumes:
+        - postgres_data:/var/lib/postgresql/data 
+      restart: unless-stopped
+
+volumes:
+  postgres_data:  
